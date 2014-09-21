@@ -41,3 +41,6 @@ gem 'spring',        group: :development
 # ember
 gem 'ember-rails'
 gem 'ember-source', '1.7.0'
+
+# gpio
+gem 'gpio'
