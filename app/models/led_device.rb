@@ -1,0 +1,2 @@
+class LedDevice < Device
+end
