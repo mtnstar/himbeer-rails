@@ -15,7 +15,8 @@ ActiveRecord::Schema.define(version: 20140921201909) do
 
   create_table "devices", force: true do |t|
     t.string   "device"
-    t.integer  "gpio_port"
+    t.string   "port"
+    t.string   "label"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
