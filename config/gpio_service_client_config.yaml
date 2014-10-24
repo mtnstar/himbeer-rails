@@ -1,0 +1,10 @@
+default: &default
+  host: 127.0.0.1
+  port: 88331
+
+development:
+  <<: *default
+  host: 192.168.200.145
+
+production:
+  <<: *default
