@@ -5,3 +5,5 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+OnOffDevice.create([{ label: 'Lamp 1', port: 1 }, { label: 'Lamp 2', port: '2' }])

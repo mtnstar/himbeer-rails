@@ -1,2 +1,2 @@
-class LedDevice < Device
+class OnOffDevice < Device
 end
