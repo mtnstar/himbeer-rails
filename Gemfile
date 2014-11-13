@@ -31,6 +31,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'rspec-mocks'
 end
 
 # Use ActiveModel has_secure_password
