@@ -8,12 +8,16 @@
   border-radius: 10px;
   width: 90%;
   background: linear-gradient(#87CEEB, #1E90FF) repeat scroll 0% 0% transparent;
-  /*background: #87CEEB;*/
   padding: 0.5rem;
   height: auto;
   font-weight: bold;
   color: white;
   margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.btn1:active {
+  background: blue;
 }
 
 .value {

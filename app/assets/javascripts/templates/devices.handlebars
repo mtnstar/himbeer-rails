@@ -1,12 +1,16 @@
 <div>
   <div class='device-list'>
     {{#each}}
-    <div class='btn1'>
-      <span class='value icon-bulp on'>
-        on
-      </span>
-      {{label}}
-    </div>
+      <div {{action 'toggle' this}} class='btn1'>
+        <span class='value icon-bulp on'>
+        {{#if on}}
+          on
+        {{else}}
+          off
+        {{/if}}
+        </span>
+        {{label}}
+      </div>
     {{/each}}
   </div>
 </div>

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   root 'assets#index'
 
   get 'devices' => 'devices#index'
+  get 'devices/:id/toggle' => 'devices#toggle'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
