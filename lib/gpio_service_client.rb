@@ -15,14 +15,17 @@ class GpioServiceClient
   end
 
   def toggle(pin)
+    data = {}
     current_value = read_gpio(pin)['value']
     if VALUES.include?(current_value)
       new_value = VALUE_ON
       if current_value == VALUE_ON
         new_value = VALUE_OFF
       end
-      update_gpio(pin, new_value)
+      data = JSON.parse(update_gpio(pin, new_value))
     end
+    data = {"pin" => "1", "value" => "0"}
+    data
   end
 
   def update_gpio(pin, value)

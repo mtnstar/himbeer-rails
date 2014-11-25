@@ -1,6 +1,10 @@
 <div {{action 'toggle' device}} class='btn1'>
   <span class='value icon-bulp on'>
+  {{#if device.on}}
   on
+  {{else}}
+  off
+  {{/if}}
   </span>
   {{device.label}}
 </div>

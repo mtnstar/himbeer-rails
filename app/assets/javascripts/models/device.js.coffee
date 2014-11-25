@@ -17,4 +17,4 @@ Himbeer.Device = DS.Model.extend
 
   toggle: ->
     @http_get('%@/toggle'.fmt @get('id')).then ( data ) =>
-      @set('on',data._result['on'])
+      @set('on',data.on)
