@@ -4,9 +4,7 @@ require 'net/http'
 
 class GpioServiceClient
 
-  VALUE_ON = 0;
-  VALUE_OFF = 1;
-  VALUES = [VALUE_ON, VALUE_OFF]
+  ON_OFF_DEVICE = {on: 0, off: 1}
 
   def initialize
     config = YAML.load_file('config/gpio_service_client.yaml')[Rails.env]
@@ -14,24 +12,48 @@ class GpioServiceClient
     @port = config["port"]
   end
 
-  def toggle(pin)
-    data = {}
-    current_value = read_gpio(pin)['value']
-    if VALUES.include?(current_value)
-      new_value = VALUE_ON
-      if current_value == VALUE_ON
-        new_value = VALUE_OFF
-      end
-      data = JSON.parse(update_gpio(pin, new_value))
+  def toggle(device)
+    if is_on_off_device(device)
+      toggle_on_off_device(device)
     end
-    data = {"pin" => "1", "value" => "0"}
-    data
+  end
+
+private
+  def toggle_on_off_device(device)
+    device.on = false
+    pin = get_pin(device)
+    current_value = get_gpio_value(pin)
+    if current_value.present? && ON_OFF_DEVICE.values.include?(current_value.to_i)
+      new_value = ON_OFF_DEVICE[:off]
+      if current_value.to_i == ON_OFF_DEVICE[:off]
+        new_value = ON_OFF_DEVICE[:on]
+      end
+      data = update_gpio(pin, new_value)
+      value = data['value']
+      if value.present? && value.to_i == ON_OFF_DEVICE[:on]
+        device.on = true
+      end
+    end
+  end
+
+  def toggle_pwm_device(device)
+  end
+
+  def get_pin(device)
+    device.port.to_i if device.port.present?
+  end
+
+  def is_on_off_device(device)
+    device.is_a?(OnOffDevice)
   end
 
   def update_gpio(pin, value)
     data = {pin: pin, value: value}.to_json
-    p data
     http_post(data)
+  end
+
+  def get_gpio_value(pin)
+    read_gpio(pin)['value']
   end
 
   def read_gpio(pin)
@@ -39,7 +61,6 @@ class GpioServiceClient
     http_post(data)
   end
 
-  private
   def http_post(data)
     req = Net::HTTP::Post.new('/', initheader = {'Content-Type' =>'application/json'})
     req.body = data

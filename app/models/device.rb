@@ -9,4 +9,8 @@ class Device < ActiveRecord::Base
     h[:on] = on
     h
   end
+
+  def toggle
+    # toggle on/off
+  end
 end

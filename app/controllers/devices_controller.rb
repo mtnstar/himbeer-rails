@@ -4,17 +4,13 @@ class DevicesController < ApplicationController
 
   def toggle
     device = Device.find(params[:id])
-    data = @gsc.toggle(device.port)
-    value = data["value"]
-    if !value.nil? && value.to_i == 0
-      device.on = true
-    end
+    @gsc.toggle(device)
     respond_to do |format|
       format.json { render json: device }
     end
   end
 
-  def setValue
+  def update
     # set speed
   end
 
