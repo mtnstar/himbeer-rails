@@ -10,8 +10,12 @@ class DevicesController < ApplicationController
     end
   end
 
-  def update
-    # set speed
+  def set_value
+    device = Device.find(params[:id])
+    value = params[:value]
+    respond_to do |format|
+      format.json { render json: device }
+    end
   end
 
   def index

@@ -7,6 +7,7 @@ class Device < ActiveRecord::Base
   def as_json(options = { })
     h = super(options)
     h[:on] = on
+    h[:type] = device
     h
   end
 
