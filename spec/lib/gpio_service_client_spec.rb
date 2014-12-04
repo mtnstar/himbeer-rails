@@ -94,4 +94,33 @@ describe GpioServiceClient do
       expect(result).to eq(0)
     end
   end
+
+  describe "#set_value" do
+    it "should not call gpio update if value null" do
+      expect(@gsc).not_to receive(:get_pin)
+      expect(@gsc).not_to receive(:update_gpio)
+      result = @gsc.set_value(@pwm_device, nil)
+      expect(result).to eq(nil)
+    end
+
+    it "should not call gpio update if value invalid" do
+      expect(@gsc).not_to receive(:get_pin)
+      expect(@gsc).not_to receive(:update_gpio)
+      result = @gsc.set_value(@pwm_device, 'silly value')
+      expect(result).to eq(nil)
+    end
+
+    it "should not call gpio update if not pwm device" do
+      expect(@gsc).not_to receive(:get_pin)
+      expect(@gsc).not_to receive(:update_gpio)
+      result = @gsc.set_value(@on_off_device, 49)
+      expect(result).to eq(nil)
+    end
+
+    it "should call gpio update" do
+      expect(@gsc).to receive(:update_gpio).with(43, 34, 'pwm')
+        .and_return({'pin' => '43', 'value' => '34'})
+      result = @gsc.set_value(@pwm_device, 34)
+    end
+  end
 end

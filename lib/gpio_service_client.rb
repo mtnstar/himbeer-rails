@@ -6,7 +6,7 @@ class GpioServiceClient
 
   ON_OFF_DEVICE = {on: 0, off: 1}
   PWM_DEVICE = {on: 50, off: 0}
-  TYPE = 'pwm'
+  TYPE_PWM = 'pwm'
 
   def initialize
     config = YAML.load_file('config/gpio_service_client.yaml')[Rails.env]
@@ -19,6 +19,15 @@ class GpioServiceClient
       toggle_on_off_device(device)
     elsif is_pwm_device(device)
       toggle_pwm_device(device)
+    end
+  end
+
+  def set_value(device, value)
+    if is_pwm_device(device)
+      if (1..100).include?(value)
+        pin = get_pin(device)
+        update_gpio(pin, value, TYPE_PWM)
+      end
     end
   end
 
