@@ -26,6 +26,10 @@
   margin-right: 1rem;
 }
 
+.slider {
+  width: 100%;
+}
+
 @font-face {
   font-family: "Roboto";
   font-style: normal;
