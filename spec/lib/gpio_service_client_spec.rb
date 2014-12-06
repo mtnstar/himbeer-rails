@@ -32,8 +32,8 @@ describe GpioServiceClient do
     describe "PwmDevice" do
       it "should turn device on if it was off" do
         expect(@gsc).to receive(:read_gpio).and_return({'pin' => '43', 'value' => '0'})
-        expect(@gsc).to receive(:update_gpio).with(43, 512, 'pwm')
-          .and_return({'pin' => '43', 'value' => '512'})
+        expect(@gsc).to receive(:update_gpio).with(43, 511, 'pwm')
+          .and_return({'pin' => '43', 'value' => '511'})
         expect(@pwm_device).to receive(:on=).with(false)
         expect(@pwm_device).to receive(:on=).with(true)
         @gsc.toggle(@pwm_device)
@@ -74,14 +74,14 @@ describe GpioServiceClient do
   end
 
   describe "#percent_to_pwm_value" do
-    it "should return 512 if percent 50" do
+    it "should return 511 if percent 50" do
       result = @gsc.send(:percent_to_pwm_value, 50)
-      expect(result).to eq(512)
+      expect(result).to eq(511)
     end
 
-    it "should return 1024 if percent 100" do
+    it "should return 1023 if percent 100" do
       result = @gsc.send(:percent_to_pwm_value, 100)
-      expect(result).to eq(1024)
+      expect(result).to eq(1023)
     end
 
     it "should return 10 if percent 1" do
@@ -92,6 +92,11 @@ describe GpioServiceClient do
     it "should return 0 if percent 0" do
       result = @gsc.send(:percent_to_pwm_value, 0)
       expect(result).to eq(0)
+    end
+
+    it "should return 869 if percent 85" do
+      result = @gsc.send(:percent_to_pwm_value, 85)
+      expect(result).to eq(869)
     end
   end
 
@@ -117,10 +122,19 @@ describe GpioServiceClient do
       expect(result).to eq(nil)
     end
 
-    it "should call gpio update" do
-      expect(@gsc).to receive(:update_gpio).with(43, 34, 'pwm')
-        .and_return({'pin' => '43', 'value' => '34'})
-      result = @gsc.set_value(@pwm_device, 34)
+    it "should call gpio update with value 511 if 50 percent" do
+      expect(@gsc).to receive(:update_gpio).with(43, 511, 'pwm')
+      result = @gsc.set_value(@pwm_device, 50)
+    end
+
+    it "should call gpio update with value 10 if 1 percent" do
+      expect(@gsc).to receive(:update_gpio).with(43, 10, 'pwm')
+      result = @gsc.set_value(@pwm_device, 1)
+    end
+
+    it "should call gpio update with value 1023 if 100 percent" do
+      expect(@gsc).to receive(:update_gpio).with(43, 1023, 'pwm')
+      result = @gsc.set_value(@pwm_device, 100)
     end
   end
 end

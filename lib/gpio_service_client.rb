@@ -26,7 +26,9 @@ class GpioServiceClient
     if is_pwm_device(device)
       if (1..100).include?(value)
         pin = get_pin(device)
-        update_gpio(pin, value, TYPE_PWM)
+        pwm_value = percent_to_pwm_value(value)
+        p 'pwm value: ' + pwm_value.to_s
+        update_gpio(pin, pwm_value, TYPE_PWM)
       end
     end
   end
@@ -57,12 +59,10 @@ private
       new_value = PWM_DEVICE[:off]
       if current_value.to_i == PWM_DEVICE[:off]
         new_value = percent_to_pwm_value(PWM_DEVICE[:on])
+        device.on = true
       end
       data = update_gpio(pin, new_value, 'pwm')
       value = data['value']
-      if value.present? && (value.to_i > PWM_DEVICE[:off])
-        device.on = true
-      end
     end
   end
 
@@ -84,12 +84,13 @@ private
   end
 
   def get_gpio_value(pin)
-    read_gpio(pin)['value']
+    data = read_gpio(pin)
+    data['value']
   end
 
   def percent_to_pwm_value(percent)
     return 0 if percent == 0
-    value = 1024 / (100 / percent)
+    value = 1023 * percent / 100
     value.to_i
   end
 

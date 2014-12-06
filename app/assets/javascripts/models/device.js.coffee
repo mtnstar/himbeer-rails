@@ -11,6 +11,18 @@ Himbeer.Device = DS.Model.extend
     @get('type') == 'PwmDevice'
   ).property('type')
 
+  temp_value: null
+
+  observe_value: (->
+    that = @
+    value = @value
+    @temp_value = @value
+    setTimeout(->
+      if (that.temp_value == value)
+        that.set_value(value)
+    , 1000)
+  ).observes('value')
+
   _ajax: (url, method, options) ->
     type    = @get 'constructor'
     adapter = @get('store').adapterFor type
@@ -21,9 +33,8 @@ Himbeer.Device = DS.Model.extend
     @_ajax(url, 'GET', options)
 
   toggle: ->
-    @http_get('%@/toggle'.fmt @get('id')).then ( data ) =>
+    @http_get('%@/toggle'.fmt(@get('id'))).then ( data ) =>
       @set('on',data.on)
 
-  set_value: ->
-    @http_get('%@/set_value'.fmt @get('id')).then ( data ) =>
-      @set('value',data.value)
+  set_value: (value) ->
+    @http_get('%@/set_value?value=%@'.fmt(@get('id'), value))

@@ -13,6 +13,9 @@ class DevicesController < ApplicationController
   def set_value
     device = Device.find(params[:id])
     value = params[:value]
+    if value.present?
+      @gsc.set_value(device, value.to_i)
+    end
     respond_to do |format|
       format.json { render json: device }
     end
