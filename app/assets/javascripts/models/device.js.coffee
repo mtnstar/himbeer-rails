@@ -11,6 +11,10 @@ Himbeer.Device = DS.Model.extend
     @get('type') == 'PwmDevice'
   ).property('type')
 
+  show_slider: (->
+    @get('pwm_device') && @get('on')
+  ).property('on')
+
   temp_value: null
 
   observe_value: (->
