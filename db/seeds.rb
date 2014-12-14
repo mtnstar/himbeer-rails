@@ -6,4 +6,5 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-OnOffDevice.create([{ label: 'Lamp 1', port: 0 }, { label: 'Motor 1', port: '1' }])
+OnOffDevice.create([{ label: 'Lamp 1', port: 0 }])
+PwmDevice.create([{ label: 'Motor 1', port: '1' }])
