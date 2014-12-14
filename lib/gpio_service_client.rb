@@ -27,7 +27,6 @@ class GpioServiceClient
       if (1..100).include?(value)
         pin = get_pin(device)
         pwm_value = percent_to_pwm_value(value)
-        p 'pwm value: ' + pwm_value.to_s
         update_gpio(pin, pwm_value, TYPE_PWM)
       end
     end
