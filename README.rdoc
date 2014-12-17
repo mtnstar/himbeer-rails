@@ -1,28 +1,43 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+himbeer-rails is a webapplication for controlling GPIO connected devices of a raspberry pi.
 
-Things you may want to cover:
+for controlling these devices it connects to a gpio-service which is provided by the following project: https://github.com/psunix/himbeer-gpio-service
 
-* Ruby version
+== Installation
 
-* System dependencies
+requirements
 
-* Configuration
+=== precompiling assets
 
-* Database creation
+bundle exec rake assets:precompile RAILS_ENV=production
 
-* Database initialization
+== Development
 
-* How to run the test suite
+for development it's recommended to use rvm. (rvm.io)
 
-* Services (job queues, cache servers, search engines, etc.)
+after you've installed rvm you are ready to checkout the project with the git clone command:
+  git clone https://....
 
-* Deployment instructions
+now it's time to install the the dependencies with bundler.
 
-* ...
+  cd himbeer-rails
+  bundle
 
+when the needed gems are installed, the database is ready to be created.
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+  rake db:migrate db:seed
+
+now open the gpio service client configuration and change the given ip address and port to fit you RPi's configuration
+
+  RAILS_ROOT/conf/gpio_service_client.yaml
+
+make sure the RPi is powered up and the gpio service is running
+
+the rails webserver should now be ready to start
+
+  rails s
+
+access the webapp by the following url:
+
+  http://localhost:3000
